@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "./main";
 import styles from "./App.module.css";
 import removeIcon from "./assets/remove.svg";
+import Modal from "./common/Modal/Modal";
 
 function App() {
   const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  const [editValue, setEditValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +87,34 @@ function App() {
     }
   };
 
+  const handleEdit = (item) => {
+    setCurrentItem(item);
+    setEditValue(item.text);
+    setIsModalOpen(true);
+  };
+
+  const handleEditChange = (e) => {
+    setEditValue(e.target.value);
+  };
+
+  const handleEditSubmit = async () => {
+    const { data, error } = await supabase
+      .from("test")
+      .update({ text: editValue })
+      .eq("id", currentItem.id)
+      .select();
+    if (error) {
+      console.error("Error updating data:", error);
+    } else {
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === currentItem.id ? { ...item, text: editValue } : item
+        )
+      );
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <div>
       <div className={styles.inputField}>
@@ -115,6 +147,7 @@ function App() {
                   완료
                 </button>
                 <button onClick={() => handleDelete(todo.id)}>삭제</button>
+                <button onClick={() => handleEdit(todo)}>수정</button>
               </div>
             </li>
           ))}
@@ -135,12 +168,17 @@ function App() {
                     <button onClick={() => handleToggleComplete(todo.id)}>
                       취소
                     </button>
+                    <button onClick={() => handleEdit(todo)}>수정</button>
                   </div>
                 </li>
               ))}
           </ul>
         </div>
       )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <input type="text" value={editValue} onChange={handleEditChange} />
+        <button onClick={handleEditSubmit}>수정 완료</button>
+      </Modal>
     </div>
   );
 }
