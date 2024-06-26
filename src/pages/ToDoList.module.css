@@ -1,0 +1,28 @@
+.inputField {
+  width: 100%;
+  display: flex;
+  border: 1px solid #000000;
+  justify-content: flex-start;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.list {
+  width: 100%;
+  padding: 0;
+}
+
+.listItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #808080;
+}
