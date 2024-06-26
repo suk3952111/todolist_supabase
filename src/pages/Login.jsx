@@ -18,14 +18,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (formData, e) => {
-    e.preventDefault(); // 폼 기본 동작 방지
+    e.preventDefault();
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
-      console.log("signup: ", { data, error });
       if (error) {
         setLoginError(error.message);
       } else {
@@ -35,8 +34,6 @@ const Login = () => {
     } catch (error) {
       console.error("로그인 중 오류 발생:", error.message);
       setLoginError(error.message);
-    } finally {
-      console.log(formData);
     }
   };
 

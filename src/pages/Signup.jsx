@@ -15,20 +15,19 @@ const Signup = () => {
   } = useForm();
   const [showPassword, toggleShowPassword] = useToggle(false);
   const [signupError, setSignupError] = useState("");
-  const { user, setUser } = useAuthContext();
+  const { setUser } = useAuthContext();
   const navigate = useNavigate();
 
   const password = watch("password");
 
   const onSubmit = async (formData, e) => {
-    e.preventDefault(); // 폼 기본 동작 방지
+    e.preventDefault();
 
     try {
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
       });
-      console.log("signup: ", { data, error });
       if (error) {
         setSignupError(error.message);
       } else {
@@ -38,12 +37,8 @@ const Signup = () => {
     } catch (error) {
       console.error("회원 가입 중 오류 발생:", error.message);
       setSignupError(error.message);
-    } finally {
-      console.log(formData);
     }
   };
-
-  console.log(user);
 
   return (
     <div>

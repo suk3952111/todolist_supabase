@@ -14,11 +14,10 @@ const Header = () => {
   const { user, setUser } = useAuthContext();
 
   const onLogout = async (e) => {
-    e.preventDefault(); // 폼 기본 동작 방지
+    e.preventDefault();
 
     try {
       const { data, error } = await supabase.auth.signOut();
-      console.log("signOut: ", { data, error });
 
       if (error) {
         alert(error.message);
