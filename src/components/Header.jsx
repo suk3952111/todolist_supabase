@@ -18,7 +18,6 @@ const Header = () => {
 
     try {
       const { error } = await supabase.auth.signOut();
-
       if (error) {
         alert(error.message);
       } else {

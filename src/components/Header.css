@@ -1,0 +1,11 @@
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.navigator-components {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
