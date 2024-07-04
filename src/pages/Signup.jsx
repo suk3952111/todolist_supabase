@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../hooks/useToggle";
 import styles from "./Signup.module.css";
-import { useAuthContext } from "../App";
 import { supabase } from "@/main";
 
 const Signup = () => {
@@ -15,7 +14,6 @@ const Signup = () => {
   } = useForm();
   const [showPassword, toggleShowPassword] = useToggle(false);
   const [signupError, setSignupError] = useState("");
-  const { setUser } = useAuthContext();
   const navigate = useNavigate();
 
   const password = watch("password");
@@ -24,14 +22,13 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
       });
       if (error) {
         setSignupError(error.message);
       } else {
-        setUser(data);
         navigate("/");
       }
     } catch (error) {

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "../hooks/useToggle";
 import "./Login.css";
 import { supabase } from "@/main";
-import { useAuthContext } from "../App";
 
 const Login = () => {
   const {
@@ -12,7 +11,6 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { setUser } = useAuthContext();
   const [loginError, setLoginError] = useState("");
   const [showPassword, toggleShowPassword] = useToggle(false);
   const navigate = useNavigate();
@@ -21,14 +19,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
       if (error) {
         setLoginError(error.message);
       } else {
-        setUser(data);
         navigate("/");
       }
     } catch (error) {
